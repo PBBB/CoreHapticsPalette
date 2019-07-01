@@ -15,6 +15,7 @@
 		2BCFBB0822CA2F8C00E54B53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BCFBB0622CA2F8C00E54B53 /* LaunchScreen.storyboard */; };
 		2BCFBB1322CA2F8C00E54B53 /* PaletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFBB1222CA2F8C00E54B53 /* PaletteTests.swift */; };
 		2BCFBB1E22CA2F8C00E54B53 /* PaletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFBB1D22CA2F8C00E54B53 /* PaletteUITests.swift */; };
+		2BCFBB2C22CA300400E54B53 /* SinglePaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFBB2B22CA300400E54B53 /* SinglePaletteView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2BCFBB1922CA2F8C00E54B53 /* PaletteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaletteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BCFBB1D22CA2F8C00E54B53 /* PaletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteUITests.swift; sourceTree = "<group>"; };
 		2BCFBB1F22CA2F8C00E54B53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2BCFBB2B22CA300400E54B53 /* SinglePaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePaletteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				2BCFBAFB22CA2F8B00E54B53 /* AppDelegate.swift */,
 				2BCFBAFD22CA2F8B00E54B53 /* SceneDelegate.swift */,
 				2BCFBAFF22CA2F8B00E54B53 /* ContentView.swift */,
+				2BCFBB2B22CA300400E54B53 /* SinglePaletteView.swift */,
 				2BCFBB0122CA2F8C00E54B53 /* Assets.xcassets */,
 				2BCFBB0622CA2F8C00E54B53 /* LaunchScreen.storyboard */,
 				2BCFBB0922CA2F8C00E54B53 /* Info.plist */,
@@ -269,6 +272,7 @@
 			files = (
 				2BCFBAFC22CA2F8B00E54B53 /* AppDelegate.swift in Sources */,
 				2BCFBAFE22CA2F8B00E54B53 /* SceneDelegate.swift in Sources */,
+				2BCFBB2C22CA300400E54B53 /* SinglePaletteView.swift in Sources */,
 				2BCFBB0022CA2F8B00E54B53 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

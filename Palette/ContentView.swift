@@ -10,14 +10,20 @@ import SwiftUI
 
 struct ContentView : View {
     var body: some View {
-        Text("Hello World")
+        VStack {
+            SinglePaletteView(title: "Continuous")
+            SinglePaletteView(title: "Transient")
+        }
     }
 }
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group {
+            ContentView()
+            ContentView().colorScheme(.dark)
+        }
     }
 }
 #endif
