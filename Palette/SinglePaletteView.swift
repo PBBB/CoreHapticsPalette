@@ -12,9 +12,23 @@ struct SinglePaletteView : View {
     var title = "Title"
     @State var sharpness = 0.50
     @State var intensity = 0.50
+    @GestureState private var dragState = DragState.inactive
+    @State private var viewState = CGSize.zero
     
     var body: some View {
-        VStack {
+        
+        let dragGesture = DragGesture(coordinateSpace:.global)
+            .updating($dragState) { (value, state,
+                _) in
+                state = .dragging(translation: value.translation)
+            }
+            .onEnded { (value) in
+                self.viewState.width += value.translation.width
+                self.viewState.height += value.translation.height
+            }
+        
+        
+        return VStack {
             Text(title)
                 .bold()
             ZStack {
@@ -25,6 +39,12 @@ struct SinglePaletteView : View {
                 Circle()
                     .fill(Color("circleColor"))
                     .frame(width: 48.0, height: 48.0, alignment: .center)
+                    .offset(
+                        x: viewState.width + dragState.translation.width,
+                        y: viewState.height + dragState.translation.height
+                    )
+                    .animation(nil)
+                    .gesture(dragGesture)
             }
             HStack {
                 Text("Sharpness: \(sharpness), Intensity: \(intensity)")
@@ -32,6 +52,20 @@ struct SinglePaletteView : View {
             }
         }
             .padding()
+    }
+    
+    enum DragState {
+        case inactive
+        case dragging(translation: CGSize)
+        
+        var translation : CGSize {
+            switch self {
+            case .inactive:
+                return .zero
+            case .dragging(let translation):
+                return translation
+            }
+        }
     }
 }
 
