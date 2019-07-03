@@ -14,46 +14,63 @@ struct SinglePaletteView : View {
     @State var intensity = 0.50
     @GestureState private var dragState = DragState.inactive
     @State private var viewState = CGSize.zero
+    @State private var circleRadius : CGFloat = 48.0
     
     var body: some View {
         
         let dragGesture = DragGesture(coordinateSpace:.global)
             .updating($dragState) { (value, state,
                 _) in
+                print("current location: \(value.location)")
                 state = .dragging(translation: value.translation)
             }
             .onEnded { (value) in
                 self.viewState.width += value.translation.width
                 self.viewState.height += value.translation.height
+        }
+        
+        func calculateOffset (geometryProxy : GeometryProxy) -> CGSize {
+            var offset = CGSize.zero
+            if self.viewState.width + self.dragState.translation.width > 0 {
+                offset.width = min(self.viewState.width + self.dragState.translation.width, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
+            } else {
+                offset.width = max(self.viewState.width + self.dragState.translation.width, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
             }
-        
-        
+            if self.viewState.height + self.dragState.translation.height > 0 {
+                offset.height = min(self.viewState.height + self.dragState.translation.height, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
+            } else {
+                offset.height = max(self.viewState.height + self.dragState.translation.height, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
+            }
+            return offset
+        }
+    
         return VStack {
             Text(title)
                 .bold()
-            GeometryReader { geometry in
-                return ZStack {
+            GeometryReader { geometryProxy in
+                ZStack {
                     Rectangle()
                         .fill(Color("backgroundColor"))
                         .aspectRatio(1.0, contentMode: .fit)
-                        .cornerRadius(12.0)
+                        .cornerRadius(24.0)
                     Circle()
                         .fill(Color("circleColor"))
-                        .frame(width: 48.0, height: 48.0, alignment: .center)
-                        .offset(
-                            x: self.viewState.width + self.dragState.translation.width,
-                            y: self.viewState.height + self.dragState.translation.height
-                    )
+                        .frame(width: self.circleRadius, height: self.circleRadius, alignment: .center)
+                        .offset(calculateOffset(geometryProxy: geometryProxy))
                         .gesture(dragGesture)
+                }.fixedSize()
+                    .onAppear {
+                        print("proxy: \(geometryProxy.size)")
                 }
             }
-            
             HStack {
                 Text("Sharpness: \(sharpness), Intensity: \(intensity)")
                     .font(.caption)
             }
         }
             .padding()
+        
+        
     }
     
     enum DragState {
