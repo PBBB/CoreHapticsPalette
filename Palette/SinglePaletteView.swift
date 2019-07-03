@@ -31,21 +31,23 @@ struct SinglePaletteView : View {
         return VStack {
             Text(title)
                 .bold()
-            ZStack {
-                Rectangle()
-                    .fill(Color("backgroundColor"))
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .cornerRadius(12.0)
-                Circle()
-                    .fill(Color("circleColor"))
-                    .frame(width: 48.0, height: 48.0, alignment: .center)
-                    .offset(
-                        x: viewState.width + dragState.translation.width,
-                        y: viewState.height + dragState.translation.height
+            GeometryReader { geometry in
+                return ZStack {
+                    Rectangle()
+                        .fill(Color("backgroundColor"))
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .cornerRadius(12.0)
+                    Circle()
+                        .fill(Color("circleColor"))
+                        .frame(width: 48.0, height: 48.0, alignment: .center)
+                        .offset(
+                            x: self.viewState.width + self.dragState.translation.width,
+                            y: self.viewState.height + self.dragState.translation.height
                     )
-                    .animation(nil)
-                    .gesture(dragGesture)
+                        .gesture(dragGesture)
+                }
             }
+            
             HStack {
                 Text("Sharpness: \(sharpness), Intensity: \(intensity)")
                     .font(.caption)
