@@ -15,34 +15,22 @@ struct SinglePaletteView : View {
     @GestureState private var dragState = DragState.inactive
     @State private var viewState = CGSize.zero
     @State private var circleRadius : CGFloat = 48.0
+    private var tempState = CGSize.zero
     
     var body: some View {
         
         let dragGesture = DragGesture(coordinateSpace:.global)
             .updating($dragState) { (value, state,
                 _) in
-                print("current location: \(value.location)")
                 state = .dragging(translation: value.translation)
             }
             .onEnded { (value) in
-                self.viewState.width += value.translation.width
-                self.viewState.height += value.translation.height
+//                self.viewState.width += value.translation.width
+//                self.viewState.height += value.translation.height
+                self.viewState = self.tempState
         }
         
-        func calculateOffset (geometryProxy : GeometryProxy) -> CGSize {
-            var offset = CGSize.zero
-            if self.viewState.width + self.dragState.translation.width > 0 {
-                offset.width = min(self.viewState.width + self.dragState.translation.width, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
-            } else {
-                offset.width = max(self.viewState.width + self.dragState.translation.width, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
-            }
-            if self.viewState.height + self.dragState.translation.height > 0 {
-                offset.height = min(self.viewState.height + self.dragState.translation.height, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
-            } else {
-                offset.height = max(self.viewState.height + self.dragState.translation.height, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
-            }
-            return offset
-        }
+        
     
         return VStack {
             Text(title)
@@ -56,12 +44,9 @@ struct SinglePaletteView : View {
                     Circle()
                         .fill(Color("circleColor"))
                         .frame(width: self.circleRadius, height: self.circleRadius, alignment: .center)
-                        .offset(calculateOffset(geometryProxy: geometryProxy))
+                        .offset(self.calculateOffset(geometryProxy: geometryProxy))
                         .gesture(dragGesture)
                 }.fixedSize()
-                    .onAppear {
-                        print("proxy: \(geometryProxy.size)")
-                }
             }
             HStack {
                 Text("Sharpness: \(sharpness), Intensity: \(intensity)")
@@ -71,6 +56,29 @@ struct SinglePaletteView : View {
             .padding()
         
         
+    }
+    
+    private func calculateOffset (geometryProxy : GeometryProxy) -> CGSize {
+        var offset = CGSize.zero
+        if self.viewState.width + self.dragState.translation.width > 0 {
+            offset.width = min(self.viewState.width + self.dragState.translation.width, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
+        } else {
+            offset.width = max(self.viewState.width + self.dragState.translation.width, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
+        }
+        if self.viewState.height + self.dragState.translation.height > 0 {
+            offset.height = min(self.viewState.height + self.dragState.translation.height, min(geometryProxy.size.width, geometryProxy.size.height)/2 - self.circleRadius/2)
+        } else {
+            offset.height = max(self.viewState.height + self.dragState.translation.height, self.circleRadius/2 - min(geometryProxy.size.width, geometryProxy.size.height)/2)
+        }
+        
+//        switch self.dragState {
+//        case .dragging(_):
+//            self.tempState = offset
+//        case .inactive:
+//            break
+//        }
+        
+        return offset
     }
     
     enum DragState {
