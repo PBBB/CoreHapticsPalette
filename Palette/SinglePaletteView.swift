@@ -15,23 +15,19 @@ struct SinglePaletteView : View {
     @GestureState private var dragState = DragState.inactive
     @State private var viewState = CGSize.zero
     @State private var circleRadius : CGFloat = 48.0
-    private var tempState = CGSize.zero
+    var tempState = CGSize.zero
     
     var body: some View {
-        
         let dragGesture = DragGesture(coordinateSpace:.global)
-            .updating($dragState) { (value, state,
-                _) in
+            .updating($dragState) { (value, state, _) in
                 state = .dragging(translation: value.translation)
             }
             .onEnded { (value) in
-//                self.viewState.width += value.translation.width
-//                self.viewState.height += value.translation.height
-                self.viewState = self.tempState
-        }
+            //                self.viewState.width += value.translation.width
+            //                self.viewState.height += value.translation.height
+            self.viewState = self.tempState
+            }
         
-        
-    
         return VStack {
             Text(title)
                 .bold()
@@ -53,9 +49,7 @@ struct SinglePaletteView : View {
                     .font(.caption)
             }
         }
-            .padding()
-        
-        
+        .padding()
     }
     
     private func calculateOffset (geometryProxy : GeometryProxy) -> CGSize {
